@@ -94,7 +94,8 @@ int main(int argc, char *argv[])
 #endif
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
-    myImpl.findName(input, pHead);
+    for(int i=0; i<100; i++)
+        myImpl.findName(input, pHead);
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_second(start, end);
 
