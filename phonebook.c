@@ -7,7 +7,7 @@
 
 
 #define GEN_DEF(prefix) \
-static entry * prefix##FindName(char lastname[], entry *pHead);\
+static entry * prefix##FindName(char lastName[], entry *pHead);\
 static int prefix##Append(char lastName[], entry **pHead, entry **e);\
 static int prefix##Free(entry *pHead);
 #define GEN_INIT_STRUCT(n, prefix) {.name=n, .findName=prefix##FindName, .append=prefix##Append, .free=prefix##Free}
@@ -21,9 +21,9 @@ static impl implList[] = {
     GEN_INIT_STRUCT("avltree", avl)
 };
 
-static void rightRotation(entry **parent,int *unbalanced);
-static void leftRotation(entry **parent,int *unbalanced);
-static int avlinsert(entry **parent,char lastname[],int * unbalanced);
+static void rightRotation(entry **parent, int *unbalanced);
+static void leftRotation(entry **parent, int *unbalanced);
+static int avlinsert(entry **parent,char lastName[],int * unbalanced);
 
 static void *(*alloc)(size_t)=malloc;
 static void (*dealloc)(void *)=free;
@@ -127,7 +127,7 @@ static int avlFree(entry *pHead)
     }
     return 0;
 }
-static int avlinsert(entry **parent,char lastname[],int * unbalanced)
+static int avlinsert(entry **parent,char lastName[],int * unbalanced)
 {
     if(*parent==NULL) {
         *unbalanced=1;
@@ -136,9 +136,9 @@ static int avlinsert(entry **parent,char lastname[],int * unbalanced)
         GET_PRIV_PTR(avlpriv, *parent)->pRight = NULL;
         strcpy((*parent)->lastName, lastname);
         GET_PRIV_PTR(avlpriv, *parent)->bf=0;
-    } else if(strcasecmp((*parent)->lastName,lastname)>0) {
+    } else if(strcasecmp((*parent)->lastName,lastName)>0) {
 
-        avlinsert(&(GET_PRIV_PTR(avlpriv, *parent)->pLeft),lastname,unbalanced);
+        avlinsert(&(GET_PRIV_PTR(avlpriv, *parent)->pLeft),lastName,unbalanced);
         if(*unbalanced)
             switch(GET_PRIV_PTR(avlpriv, *parent)->bf) {
                 case -1:
@@ -151,8 +151,8 @@ static int avlinsert(entry **parent,char lastname[],int * unbalanced)
                 case 1:
                     leftRotation(parent,unbalanced);
             }              //need to do Left r
-    } else if(strcasecmp((*parent)->lastName,lastname)<=0) {
-        avlinsert(&(GET_PRIV_PTR(avlpriv,*parent)->pRight),lastname,unbalanced);
+    } else if(strcasecmp((*parent)->lastName,lastName)<=0) {
+        avlinsert(&(GET_PRIV_PTR(avlpriv,*parent)->pRight),lastName,unbalanced);
         if(*unbalanced)
             switch(GET_PRIV_PTR(avlpriv, *parent)->bf) {
                 case 1:
@@ -170,7 +170,7 @@ static int avlinsert(entry **parent,char lastname[],int * unbalanced)
     return 1;
 
 }
-static void leftRotation(entry **parent,int *unbalanced)
+static void leftRotation(entry **parent, int *unbalanced)
 {
     entry *grandchild;
     entry *child;
@@ -205,7 +205,7 @@ static void leftRotation(entry **parent,int *unbalanced)
     GET_PRIV_PTR(avlpriv, *parent)->bf=0;
     *unbalanced=0;
 }
-static void rightRotation(entry **parent,int *unbalanced)
+static void rightRotation(entry **parent, int *unbalanced)
 {
     entry *grandchild;
     entry *child;
